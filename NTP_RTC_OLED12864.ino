@@ -1,17 +1,41 @@
-/********************************************************
- *    这是一个使用NodeMCU-01（ESP-12E）、DS3231实时时钟模块和
- * OLED显示器（SSD1306 128×64）制作的时钟。
+/***********************************************************************************************************
+ *    这是一个使用NodeMCU-01（ESP-12E）、DS3231实时时钟模块和OLED显示器（SSD1306 128×64）制作的时钟（默认为北京时间)。
+ *    This is a progamme for NodeMCU which uses DS3231 model and OLED13864_IIC to show current time(default 
+ * is Beijing Time) and can also be an alarm.
+ * 
  *    显示屏使用U8g2库,实时时钟使用RTClib库。
+ *    The programme uses u8g2 Library for OLED12864_IIC Display as well as RTClib for DS3231.
+ *    u8g2:   https://github.com/olikraus/u8g2
+ *    RTClib: https://github.com/adafruit/RTClib
  * 
- * 接线说明：
- *    SCL--D1
- *    SDA--D2
+ * 接线说明/Connecting instructions：
+ *    SCL--D1(GPIO 5)
+ *    SDA--D2(GPIO 4)
  * 
- * 程序特色：
- *    使用NTP时间库与互联网同步时间，默认每60秒同步一次。
+ * 程序特色/Features：
+ *    使用NTP时间库与互联网同步时间，默认每30秒同步一次。
+ *    The programme uses NTPClient to synchronize the time, synchronize per 30s default.
+ *    NTPClient:https://github.com/arduino-libraries/NTPClient
+ * 
+ * 
+ * ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+ * 备注 ：记得把下面的SSID和Password换成你自己Wifi的名称和密码
+ * NOTE: Remember to Change the "ssid" and "passwords" below to the SSID and Password of 
+ *       your own WIFI.
+ * 备注2：目前存在漏洞，当AP模式开启时只能在连上ESP8266的WIFI后才能使用http://espalarm.local访问
+ *       设置页面，否则只能使用ip地址访问。
+ * NOTE2：There is a loophole, when the AP mode is turned on, you can use 
+ *       http://espalarm.local access to the settings page only after you connected the WIFI 
+ *       of ESP8266 ,otherwise it can only be accessed using the ip address.
+ * 备注3：这是作者第一篇在GitHub发布的源码，如有不妥还请指出。
+ * NOTE3: This is the author's first source post on GitHub, please point out if there 
+ * is anything wrong with it.
+ * 备注4:水平不行，英语渣翻……
+ * NOTE4:My english is not so good :(
+ * 
  * 
  * 小轩010编写/Compile by xiaoxuan010
- * 最后更改/Last revise:2020.4.8
+ * 最后更改/Last revise:2020.4.17
  ******************************************************/
 
 
@@ -25,10 +49,11 @@
 #include <ESP8266mDNS.h>
 #include <U8g2lib.h>
 #include <EEPROM.h>
-#include "index.h"
+#include "index_CN.h"
 
-#define cirR 25
-#define dispRotationAddr 0
+#define cirR 25             //Radius of the dial
+//EEPROM Address Settings
+#define dispRotationAddr 0  
 #define alarmHourAddr    1
 #define alarmMinuteAddr  2
 #define isAlarmOnAddr    3
@@ -40,9 +65,10 @@
 
 typedef struct{int x;int y;}pointPos;
 
-const char *host     = "espalarm";
-const char *ssid     = "1108";
-const char *password = "13600066680";
+const char *host     = "espalarm";  //you can visit http://espalarm.local in your broswer 
+                                    //to change some settings for the alarm
+const char *ssid     = "your-ssid";
+const char *password = "your-pastwords";
 const char *asAPssid = "ESP8266alarm";
 const char *asAPpass = "xiaoxuan010";
 const char *daysOfWeek[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
@@ -51,9 +77,9 @@ const float sin30n[] = {0.0000000 ,0.5000000 ,0.8660254 ,1.0000000 ,0.8660254 ,0
 const float cos30n[] = {1.0000000 ,0.8660254 ,0.5000000 ,0.0000000 ,-0.5000000,-0.8660254,-1.0000000,-0.8660254 ,-0.5000000 ,0.0000000  ,0.5000000  ,0.8660254  };
 
 WiFiUDP ntpUDP;
-RTC_DS3231 rtc;
+RTC_DS3231 rtc;            // ↓↓↓↓↓↓↓↓↓↓ NTP Server .you can use other Servers such as pool.ntp.org
 NTPClient timeClient(ntpUDP, "ntp1.aliyun.com", 60*60*8, 30000);
-ESP8266WebServer server(80);
+ESP8266WebServer server(80);//Jet lag (in seccond)↑↑↑↑↑↑ ↑↑↑↑↑update Interval (in ms)                
 U8G2_SSD1306_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0,U8X8_PIN_NONE);
 
 unsigned long long LastUpdateTime = 0;
@@ -191,7 +217,7 @@ void serverBegin(){
 
   server.on("/settings/alarm",HTTP_POST,[](){
     server.sendHeader("Connection","close");
-    server.send(200,"text/html","<h3>上传成功</h3>");
+    server.send(200,"text/html","<h3>上传成功</h3><h4>Uploaded successfully</h4>");
     isAlarmOn = server.arg("isAlarmOn")=="true"?alarm_ON:alarm_OFF;
     EEPROM.write(isAlarmOnAddr,isAlarmOn);
     Serial.printf("IAO:%d\t",isAlarmOn);
@@ -211,17 +237,17 @@ void serverBegin(){
 
   server.on("/settings/display",HTTP_POST,[](){
     server.sendHeader("Connection","close");
-    server.send(200,"text/html","<h3>上传成功</h3>");
+    server.send(200,"text/html","<h3>上传成功</h3><h4>Uploaded successfully</h4>");
     isSavePower = server.arg("isSavePower")=="0"?0:1;
     u8g2.setPowerSave(isSavePower);
   });
   server.on("/update", HTTP_POST, [](){
     server.sendHeader("Connection", "close");
-    String html1 = "<h1>上传";
+    String html1 = "<h3>上传";
     html1 += Update.hasError()?"失败":"成功";
-    html1 += "</h1><p>";
+    html1 += "</h3><h4>";
     html1 += Update.hasError()?"fail":"success";
-    html1 += "</p>";
+    html1 += "</h4>";
     server.send(200, "text/html", html1.c_str());
     delay(1000);
     ESP.restart();
