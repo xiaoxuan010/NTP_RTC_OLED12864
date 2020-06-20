@@ -177,7 +177,7 @@ void serverBegin(){
   server.on("/settings/alarm",HTTP_POST,[](){
     server.sendHeader("Connection","close");
     String html = "<h3>上传成功</h3><a href='\\'>返回</a>";
-    server.send(200,"text/html",html.c_str());
+    server.send(200,"text/html; charset=utf-8",html.c_str());
     isAlarmOn = server.arg("isAlarmOn")=="true"?alarm_ON:alarm_OFF;
     EEPROM.write(isAlarmOnAddr,isAlarmOn);
     Serial.printf("IAO:%d\t",isAlarmOn);
@@ -198,19 +198,19 @@ void serverBegin(){
   server.on("/settings/display",HTTP_POST,[](){
     server.sendHeader("Connection","close");
     String html = "<h3>上传成功</h3><a href='\\'>返回</a>";
-    server.send(200,"text/html",html.c_str());
+    server.send(200,"text/html; charset=utf-8",html.c_str());
     isSavePower = server.arg("isSavePower")=="0"?0:1;
     u8g2.setPowerSave(isSavePower);
   });
   
   server.on("/update", HTTP_POST, [](){
     server.sendHeader("Connection", "close");
-    String html1 = "<h3>上传";
-    html1 += Update.hasError()?"失败":"成功";
-    html1 += "</h3><h4>";
-    html1 += Update.hasError()?"fail":"success";
-    html1 += "</h4><a href='\\'>返回</a>";
-    server.send(200, "text/html", html1.c_str());
+    String html = "<h3>上传";
+    html += Update.hasError()?"失败":"成功";
+    html += "</h3><h4>";
+    html += Update.hasError()?"fail":"success";
+    html += "</h4><a href='\\'>返回</a>";
+    server.send(200,"text/html; charset=utf-8",html.c_str());
     delay(1000);
     ESP.restart();
   },[](){
