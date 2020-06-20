@@ -197,7 +197,7 @@ void serverBegin(){
 
   server.on("/settings/display",HTTP_POST,[](){
     server.sendHeader("Connection","close");
-    String html = "<h3>上传成功</h3><a href='、\\'>返回</a>";
+    String html = "<h3>上传成功</h3><a href='\\'>返回</a>";
     server.send(200,"text/html",html.c_str());
     isSavePower = server.arg("isSavePower")=="0"?0:1;
     u8g2.setPowerSave(isSavePower);
