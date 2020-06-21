@@ -10,10 +10,12 @@ const char PAGE_INDEX[] PROGMEM = R"=====(
         <script>
             function hideTimeInput(){
                 document.getElementById('timeInput').style.display='none';
+                document.getElementById('timeInputSubmit').style.display='none';
             }
             
             function showTimeInput(){
                 document.getElementById('timeInput').style.display='block';
+                document.getElementById('timeInputSubmit').style.display='block';
             }
 
             function submitAlarmForm(){
@@ -33,7 +35,7 @@ const char PAGE_INDEX[] PROGMEM = R"=====(
                 <input onclick='submitAlarmForm()' type="radio" name="isAlarmOn" value="false" />关
             </p>
             <p id="timeInput" style='display:none'>时间：<input type="time" name="alarmTime" \></p>
-            <input type="submit" value="确定">
+            <input id="timeInputSubmit" style='display:none' type="submit" value="确定">
         </form>
         <br/>
         <h4>显示器</h4>

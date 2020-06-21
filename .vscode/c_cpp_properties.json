@@ -6,7 +6,9 @@
                 "${workspaceFolder}/**",
                 "E:/SoftWares/Arduino 1.8.12/Arduino/libraries/**",
                 "C:\\Users\\25920\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.6.3\\libraries/**",
-                "D:\\梁宇轩\\技术类\\电子\\Arduino\\程序\\libraries/**"
+                "D:\\梁宇轩\\技术类\\电子\\Arduino\\程序\\libraries/**",
+                "E:\\SoftWares\\Arduino 1.8.12\\Arduino\\hardware\\arduino\\avr\\cores\\arduino/**",
+                "E:\\SoftWares\\Arduino 1.8.12\\Arduino\\hardware\\tools\\avr\\avr\\include/**"
             ],
             "defines": [
                 "_DEBUG",
