@@ -7,23 +7,40 @@ const char PAGE_INDEX[] PROGMEM = R"=====(
     </head>
 
     <body>
+        <script>
+            function hideTimeInput(){
+                document.getElementById('timeInput').style.display='none';
+            }
+            
+            function showTimeInput(){
+                document.getElementById('timeInput').style.display='block';
+            }
+
+            function submitAlarmForm(){
+                document.getElementById("alarmForm").submit();
+            }
+
+            function submitDisplayForm(){
+                document.getElementById("displayForm").submit();
+            }
+        </script>
+
         <h3>ESP8266 设置</h3>
         <h4>闹钟</h4>
-        <form method="POST" action="/settings/alarm" enctype="multipart/form-data">
+        <form id='alarmForm' method="POST" action="/settings/alarm" enctype="multipart/form-data">
             <p>闹钟：
-                <input type="radio" name="isAlarmOn" value="true" />开
-                <input type="radio" name="isAlarmOn" value="false" />关
+                <input onclick='showTimeInput()' type="radio" name="isAlarmOn" value="true" />开
+                <input onclick='submitAlarmForm()' type="radio" name="isAlarmOn" value="false" />关
             </p>
-            <p>闹钟时间：<input type="time" name="alarmTime" \></p>
+            <p id="timeInput" style='display:none'>时间：<input type="time" name="alarmTime" \></p>
             <input type="submit" value="确定">
         </form>
         <br/>
         <h4>显示器</h4>
-            <form method="POST" action="/settings/display" enctype="multipart/form-data">
+            <form id='displayForm' method="POST" action="/settings/display" enctype="multipart/form-data">
                 <p>显示屏：
-                    <input type="radio"  name="isSavePower" value="0" />开
-                    <input type="radio"  name="isSavePower" value="1" />关
-                    <input type="submit" value="确定">
+                    <input onclick='submitDisplayForm()' type="radio"  name="isSavePower" value="0" />开
+                    <input onclick='submitDisplayForm()' type="radio"  name="isSavePower" value="1" />关
                 </p>
             </form>
         <br/><br/>
