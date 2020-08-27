@@ -1,17 +1,19 @@
-     这是一个使用NodeMCU-01（ESP-12E）、DS3231实时时钟模块和OLED显示器（SSD1306 128×64）制作的时钟（默认为北京时间)。
-     This is a progamme for NodeMCU which uses DS3231 model and OLED13864_IIC to show current time(default 
-  is Beijing Time) and can also be an alarm.
+#自动同步时间的可掉电保存时间的闹钟
+##简介
+	这是一个使用NodeMCU-01（ESP-12E）、DS3231实时时钟模块和OLED显示器（SSD1306 128×64）制作的时钟（默认为北京时间)。
+     This is a progamme for NodeMCU which uses DS3231 model and OLED13864_IIC to show current time(default
+	is Beijing Time) and can also be an alarm.
   
      显示屏使用U8g2库,实时时钟使用RTClib库。
      The programme uses u8g2 Library for OLED12864_IIC Display as well as RTClib for DS3231.
      u8g2:   https://github.com/olikraus/u8g2
      RTClib: https://github.com/adafruit/RTClib
   
-  接线说明/Connecting instructions：
+##接线说明/Connecting instructions：
      SCL--D1(GPIO 5)
      SDA--D2(GPIO 4)
   
-  程序特色/Features：
+##程序特色/Features：
      使用NTP时间库与互联网同步时间，默认每30秒同步一次。
      The programme uses NTPClient to synchronize the time, synchronize per 30s default.
      NTPClient:https://github.com/arduino-libraries/NTPClient
@@ -32,5 +34,4 @@
   
   
   小轩010编写/Compile by xiaoxuan010
-  最后更改/Last revise:2020.6.20
- /
+  最后更改/Last revise:2020.8.27
