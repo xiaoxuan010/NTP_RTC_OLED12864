@@ -3,6 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
+                "C:\\Users\\25920\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools\\**",
+                "C:\\Users\\25920\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.7.1\\**",
                 "${workspaceFolder}/**",
                 "E:/SoftWares/Arduino 1.8.12/Arduino/libraries/**",
                 "C:\\Users\\25920\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.6.3\\libraries/**",
@@ -18,7 +20,8 @@
             "compilerPath": "E:\\SoftWares\\Dev-C++ 5.11\\Dev-Cpp\\MinGW64\\bin\\gcc.exe",
             "cStandard": "c11",
             "cppStandard": "c++14",
-            "intelliSenseMode": "clang-x64"
+            "intelliSenseMode": "clang-x64",
+            "forcedInclude": []
         }
     ],
     "version": 4

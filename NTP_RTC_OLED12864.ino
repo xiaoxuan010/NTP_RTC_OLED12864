@@ -174,6 +174,23 @@ void serverBegin(){
     //Serial.println("Finish connection");
   });
 
+  server.on("/getSettings",HTTP_GET,[](){
+    String json1 = "{\"isAlarmOn\":";
+           json1 += (isAlarmOn == alarm_ON?"\"true\",":"\"false\",");
+           json1 += "\"alarmTime\":\"";
+           if(alarmHour<10) 
+            json1+="0";
+           json1 += String(alarmHour);
+           json1 += ":";
+           if(alarmMinute<10)
+            json1+="0";
+           json1 += String(alarmMinute);
+           json1 += "\",\"isSavePower\":";
+           json1 += isSavePower?"\"1\"}":"\"0\"}";
+    server.sendHeader("Connection","close");
+    server.send(200,"text/plain; charset=utf-8",json1.c_str());
+  });
+
   server.on("/settings/alarm",HTTP_POST,[](){
     server.sendHeader("Connection","close");
     String html = "<h3>上传成功</h3><a href='\\'>返回</a>";
