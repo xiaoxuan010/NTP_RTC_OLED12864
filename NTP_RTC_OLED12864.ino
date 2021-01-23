@@ -26,8 +26,8 @@ typedef struct{int x;int y;}pointPos;
 
 const char *host     = "espalarm";  //you can visit http://espalarm.local in your broswer 
                                     //to change some settings for the alarm
-const char *ssid     = "1108";
-const char *password = "13600066680";
+const char *ssid     = "Main-702";
+const char *password = "tpp13698";
 const char *asAPssid = "ESP8266alarm";
 const char *asAPpass = "xiaoxuan010";
 const char *daysOfWeek[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
